@@ -7,6 +7,7 @@ namespace ScrollShooter
     public class GameplayInputManager : MonoBehaviour
     {
         public event Action<float> MovementPlayerAxisReceived;
+        public event Action JumpEventRecived;
         
         private PlayerMovementInput _playerMovementInput;
         private PlayerInputMap _input;
@@ -30,6 +31,12 @@ namespace ScrollShooter
         {
             _playerMovementInput.SetPlayerInput(input);
             _playerMovementInput.MovementAxisReceived += OnMovementAxisReceived;
+            _playerMovementInput.JumpEvent += PlayerMovementInputOnJumpEvent;
+        }
+
+        private void PlayerMovementInputOnJumpEvent()
+        {
+            JumpEventRecived?.Invoke();
         }
 
         private void OnMovementAxisReceived(float axisValue)
