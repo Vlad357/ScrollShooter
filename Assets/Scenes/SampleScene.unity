@@ -523,7 +523,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   jumpForse: 5
-  gruoundJumpOffset: 1.2
   speed: 200
 --- !u!114 &699282588
 MonoBehaviour:

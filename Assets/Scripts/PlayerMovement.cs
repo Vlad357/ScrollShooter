@@ -16,7 +16,10 @@ namespace ScrollShooter
         private Animator _animator;
 
         [SerializeField] private float jumpForse;
-        [SerializeField] private float gruoundJumpOffset = 1.1f;
+        private float _gruoundJumpOffset = 1.2f;
+        private float _gruoundJumpSideOffset = 0.93f;
+        private float _groundJumpSideDirectionX = 0.55f;
+        
         [SerializeField]private float speed = 1f;
         private void Start()
         {
@@ -45,11 +48,6 @@ namespace ScrollShooter
 
         private void OnMovementPlayerAxisReceived(float axisValue)
         {
-            //if (!InAirCheck())
-            //{
-            //    return;
-            //}
-            
             InAirCheck();
             
             if (axisValue != 0)
@@ -66,13 +64,36 @@ namespace ScrollShooter
 
         private bool InAirCheck()
         {
+            float rayMultiplayerDown = transform.localScale.y * _gruoundJumpOffset;
+            float rayMultiplayerSide = transform.localScale.y * _gruoundJumpSideOffset;
+            
             RaycastHit2D hit = Physics2D.Raycast(
                 transform.position, 
                 Vector2.down, 
-                transform.localScale.y * gruoundJumpOffset,
+                rayMultiplayerDown,
                 groundLayer);
 
-            bool inAir = (hit.collider != null);
+            Vector2 sideCheckLeft = Vector2.down + Vector2.left * _groundJumpSideDirectionX;
+            Vector2 sideCheckRight = Vector2.down + Vector2.right * _groundJumpSideDirectionX;
+            
+            RaycastHit2D hitLeft = Physics2D.Raycast(
+                transform.position, 
+                sideCheckLeft, 
+                rayMultiplayerSide,
+                groundLayer);
+            
+            RaycastHit2D hitRight = Physics2D.Raycast(
+                transform.position, 
+                sideCheckRight, 
+                rayMultiplayerSide,
+                groundLayer);
+
+            Debug.DrawRay(transform.position, Vector2.down * rayMultiplayerDown, Color.green);
+            Debug.DrawRay(transform.position, sideCheckLeft * rayMultiplayerSide, Color.green);
+            Debug.DrawRay(transform.position, sideCheckRight * rayMultiplayerSide, Color.green);
+            
+            bool sideHit = hitLeft.collider != null || hitRight.collider != null;
+            bool inAir = sideHit || hit.collider != null;
             
             _animator.SetBool(PlayerAnimatorParameters.IN_AIR, !inAir);
 
