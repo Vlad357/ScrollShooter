@@ -24,6 +24,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Attack",
+                    "type": "Button",
+                    "id": "682474be-8c33-470a-b5c8-91b78fde5768",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "SwitchWeapon",
                     "type": "Value",
                     "id": "7c0af2cf-9b56-4a85-9a97-10685cce613b",
@@ -86,6 +95,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "SwitchWeapon",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e26727ad-1459-4aa1-a0dd-d1e88c550436",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Attack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

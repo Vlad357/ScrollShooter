@@ -8,8 +8,8 @@ namespace ScrollShooter
     {
         public event Action<float> MovementPlayerAxisReceived;
         public event Action JumpEventRecived;
-
         public event Action SwitchWeapon;
+        public event Action Attack;
         
         private PlayerMovementInput _playerMovementInput;
         private PlayerWeaponInput _playerWeaponInput;
@@ -38,11 +38,7 @@ namespace ScrollShooter
             _playerMovementInput.JumpEvent += PlayerMovementInputOnJumpEvent;
             
             _playerWeaponInput.OnSwitchWeapon += PlayerWeaponInputOnOnSwitchWeapon;
-        }
-
-        private void PlayerWeaponInputOnOnSwitchWeapon()
-        {
-            SwitchWeapon?.Invoke();
+            _playerWeaponInput.OnAttackWeapon += PlayerWeaponInputOnAttack;
         }
 
         private void PlayerMovementInputOnJumpEvent()
@@ -53,6 +49,16 @@ namespace ScrollShooter
         private void OnMovementAxisReceived(float axisValue)
         {
             MovementPlayerAxisReceived?.Invoke(axisValue);
+        }
+
+        private void PlayerWeaponInputOnOnSwitchWeapon()
+        {
+            SwitchWeapon?.Invoke();
+        }
+        
+        private void PlayerWeaponInputOnAttack()
+        {
+            Attack?.Invoke();
         }
     }
 }

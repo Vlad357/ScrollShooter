@@ -7,6 +7,7 @@ namespace ScrollShooter
     public class PlayerWeaponInput
     {
         public event Action OnSwitchWeapon;
+        public event Action OnAttackWeapon;
         
         private PlayerInputMap _input;
 
@@ -18,17 +19,21 @@ namespace ScrollShooter
 
             InitInputPort(_input);
         }
-
+        
         private void InitInputPort(PlayerInputMap input)
         {
             Debug.Log("init");
-            input.Player.SwitchWeapon.started += SwitchWeaponOnperformed;
+            input.Player.SwitchWeapon.started  += SwitchWeaponOnperformed;
+            input.Player.Attack.performed += AttackOnperformed;
+        }
+
+        private void AttackOnperformed(InputAction.CallbackContext obj)
+        {
+            OnAttackWeapon?.Invoke();
         }
 
         private void SwitchWeaponOnperformed(InputAction.CallbackContext context)
         {
-            Debug.Log("switch");
-            Debug.Log(context.ReadValue<float>());
             OnSwitchWeapon?.Invoke();
         }
     }

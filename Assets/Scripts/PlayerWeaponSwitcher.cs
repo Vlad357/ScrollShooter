@@ -25,8 +25,6 @@ namespace ScrollShooter
 
         private void OnSwitchWeapon()
         {
-            print("weapon switch!");
-            
             _animator.SetTrigger(PlayerAnimatorParameters.SWAP_ARMED);
             int weaponNumber = _animator.GetInteger(PlayerAnimatorParameters.WEAPON_NUMBER);
             weaponNumber = weaponNumber == 0 ? 1 : 0;
