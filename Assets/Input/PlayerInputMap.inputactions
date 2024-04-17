@@ -3,31 +3,51 @@
     "maps": [
         {
             "name": "Player",
-            "id": "9b7b1fae-4f93-47dd-929f-a3d0c4c568ef",
+            "id": "0f7ce70f-cc52-4a76-bfc1-716ef417e251",
             "actions": [
-                {
-                    "name": "Movement",
-                    "type": "PassThrough",
-                    "id": "182ffcb2-cef2-4163-8849-e497c9742b8f",
-                    "expectedControlType": "Axis",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
                 {
                     "name": "Jump",
                     "type": "Button",
-                    "id": "f416c175-d0e1-41b1-86f7-bdd0235b51ce",
+                    "id": "0dc6f1e9-8a41-40f6-83eb-c8056f072de1",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Movement",
+                    "type": "Button",
+                    "id": "6dcc185c-fd90-4236-a064-2db1f75daa84",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SwitchWeapon",
+                    "type": "Value",
+                    "id": "7c0af2cf-9b56-4a85-9a97-10685cce613b",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
                 {
+                    "name": "",
+                    "id": "c3c88889-549b-4f5c-bfc5-93e6d0e018b1",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
                     "name": "1D Axis",
-                    "id": "43052d92-a86d-48da-ad06-ad2c9a98e018",
+                    "id": "598c529f-d358-4217-bd13-0ba35e4f4937",
                     "path": "1DAxis",
                     "interactions": "",
                     "processors": "",
@@ -38,7 +58,7 @@
                 },
                 {
                     "name": "negative",
-                    "id": "4110ea3b-8b49-4ca2-8ddf-7e6d45dbeb5b",
+                    "id": "0b282650-2bd5-4b04-a386-4f8c19adad8d",
                     "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
@@ -49,7 +69,7 @@
                 },
                 {
                     "name": "positive",
-                    "id": "8fc1b044-fa21-4092-9d0b-b3cab09c9047",
+                    "id": "06f2c0b5-9271-4885-99fd-3a6d57607f62",
                     "path": "<Keyboard>/d",
                     "interactions": "",
                     "processors": "",
@@ -60,12 +80,12 @@
                 },
                 {
                     "name": "",
-                    "id": "9d0c5cce-c695-4d39-95ed-207bd8014699",
-                    "path": "<Keyboard>/space",
+                    "id": "5e54bde7-e157-498d-99aa-a690c85f1584",
+                    "path": "<Mouse>/scroll/y",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Jump",
+                    "action": "SwitchWeapon",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

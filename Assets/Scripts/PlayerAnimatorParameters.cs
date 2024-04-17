@@ -9,5 +9,6 @@ namespace ScrollShooter
         public static readonly string JUMP = "Jump";
         public static readonly string DEATH = "Death";
         public static readonly string IN_AIR = "InAir";
+        public static readonly string SWAP_ARMED = "SwapArmed";
     }
 }

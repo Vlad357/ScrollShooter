@@ -17,7 +17,7 @@ namespace ScrollShooter
 
         [SerializeField] private float jumpForse;
         private float _gruoundJumpOffset = 1.2f;
-        private float _gruoundJumpSideOffset = 0.93f;
+        private float _gruoundJumpSideOffset = 1.03f;
         private float _groundJumpSideDirectionX = 0.55f;
         
         [SerializeField]private float speed = 1f;
