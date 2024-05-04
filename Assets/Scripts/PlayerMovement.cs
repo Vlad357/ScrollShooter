@@ -15,12 +15,23 @@ namespace ScrollShooter
         private Rigidbody2D _rigidbody2D;
         private Animator _animator;
 
+        private bool _jumpStarted = false, _inAirStarted = false;
+        
         [SerializeField] private float jumpForse;
-        private float _gruoundJumpOffset = 1.2f;
-        private float _gruoundJumpSideOffset = 1.03f;
-        private float _groundJumpSideDirectionX = 0.55f;
+        [SerializeField] private float _gruoundJumpOffset = 1.2f;
+        [SerializeField] private float _gruoundJumpSideOffset = 1.03f;
+        
+        [SerializeField] private float _groundJumpSideDirectionX = 0.55f;
         
         [SerializeField]private float speed = 1f;
+
+        public void StartJump()
+        {
+            _rigidbody2D.AddForce(Vector2.up * jumpForse, ForceMode2D.Impulse);
+            
+            _jumpStarted = true;
+        }
+        
         private void Start()
         {
             _gameplayInput = GetComponent<GameplayInputManager>();
@@ -42,7 +53,6 @@ namespace ScrollShooter
             {
                 return;
             }
-            _rigidbody2D.AddForce(Vector2.up * jumpForse, ForceMode2D.Impulse);
             _animator.SetTrigger(PlayerAnimatorParameters.JUMP);
         }
 
@@ -93,11 +103,25 @@ namespace ScrollShooter
             Debug.DrawRay(transform.position, sideCheckRight * rayMultiplayerSide, Color.green);
             
             bool sideHit = hitLeft.collider != null || hitRight.collider != null;
-            bool inAir = sideHit || hit.collider != null;
-            
-            _animator.SetBool(PlayerAnimatorParameters.IN_AIR, !inAir);
+            bool onGround = sideHit || hit.collider != null;
 
-            return inAir;
+            if (!onGround && !_jumpStarted && !_inAirStarted)
+            {
+                _inAirStarted = true;
+                _animator.SetTrigger(PlayerAnimatorParameters.IN_AIR_START);
+                print("in air start");
+            }
+
+            if (onGround && (_jumpStarted || _inAirStarted) & _rigidbody2D.velocity.y < 0)
+            {
+                _jumpStarted = false;
+                _inAirStarted = false;
+            }
+            
+            _animator.SetFloat(PlayerAnimatorParameters.FLY_SPEED, _rigidbody2D.velocity.y);
+            _animator.SetBool(PlayerAnimatorParameters.IN_AIR, !onGround);
+            
+            return onGround;
         }
     }
 }

@@ -10,6 +10,8 @@ namespace ScrollShooter
         public event Action JumpEventRecived;
         public event Action SwitchWeapon;
         public event Action Attack;
+
+        public event Action CansledActiveAction;
         
         private PlayerMovementInput _playerMovementInput;
         private PlayerWeaponInput _playerWeaponInput;
@@ -31,6 +33,11 @@ namespace ScrollShooter
             _input.Disable();
         }
 
+        public void CanselActivAction()
+        {
+            CansledActiveAction?.Invoke();
+        }
+
         private void InputsInit(PlayerInputMap input)
         {
             _playerMovementInput.SetPlayerInput(input);
@@ -43,6 +50,7 @@ namespace ScrollShooter
 
         private void PlayerMovementInputOnJumpEvent()
         {
+            CanselActivAction();
             JumpEventRecived?.Invoke();
         }
 
