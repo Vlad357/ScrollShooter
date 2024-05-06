@@ -11,12 +11,12 @@ public class Entity : MonoBehaviour
     private EntityHealth _health;
     private void Start()
     {
-        _health = new EntityHealth();
-        _health.deathEvent += Death;
+        _health = GetComponent<EntityHealth>();
+        _health.deathEvent += SetScoreOnDeath;
         _health.Regeneration();
     }
 
-    private void Death(GameObject killer)
+    private void SetScoreOnDeath(GameObject killer)
     {
         killer.TryGetComponent(out ScoreCounter counter);
         counter.SetScore(_scoreEntity);
