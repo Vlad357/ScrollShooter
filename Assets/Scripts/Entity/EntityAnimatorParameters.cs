@@ -1,6 +1,6 @@
-namespace ScrollShooter
+namespace ScrollShooter.Entity
 {
-    public class PlayerAnimatorParameters
+    public class EntityAnimatorParameters
     {
         public static readonly string SPEED_PERSON = "SpeedPerson";
         public static readonly string WEAPON_NUMBER = "WeponNumber";

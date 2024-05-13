@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace ScrollShooter
+namespace ScrollShooter.Player
 {
     public class PlayerMovementInput : MonoBehaviour
     {

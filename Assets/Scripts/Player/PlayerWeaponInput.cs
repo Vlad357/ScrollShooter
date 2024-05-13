@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace ScrollShooter
+namespace ScrollShooter.Player
 {
     public class PlayerWeaponInput
     {
@@ -10,8 +10,6 @@ namespace ScrollShooter
         public event Action OnAttackWeapon;
         
         private PlayerInputMap _input;
-
-        private float _mouseScrollY;
 
         public PlayerWeaponInput(PlayerInputMap input)
         {

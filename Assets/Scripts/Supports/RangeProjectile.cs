@@ -1,16 +1,18 @@
+using ScrollShooter.Entity;
 using System;
 using UnityEngine;
 
-namespace ScrollShooter
+namespace ScrollShooter.Supports
 {
     public class RangeProjectile : MonoBehaviour
     {
+
+        [SerializeField] private float damagePoints;
+        [SerializeField] private float speed;
+
         private Rigidbody2D _rigidbody;
 
         private GameObject owner;
-        
-        [SerializeField] private float damagePoints;
-        [SerializeField] private float speed;
 
         private void Awake()
         {
@@ -30,7 +32,7 @@ namespace ScrollShooter
             {
                 return;
             }
-            if (other.gameObject.TryGetComponent<EntityHealth>(out EntityHealth enemy))
+            if (other.gameObject.TryGetComponent(out EntityHealth enemy))
             {
                 enemy.SetDamage(damagePoints, owner);
             }

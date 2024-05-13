@@ -1,7 +1,8 @@
+using ScrollShooter.Player;
 using System;
 using UnityEngine;
 
-namespace ScrollShooter
+namespace ScrollShooter.Input
 {
     [RequireComponent(typeof(PlayerMovementInput))]
     public class GameplayInputManager : MonoBehaviour

@@ -1,7 +1,8 @@
-using System;
+using ScrollShooter.Entity;
+using ScrollShooter.Input;
 using UnityEngine;
 
-namespace ScrollShooter
+namespace ScrollShooter.Player
 {
     [RequireComponent(typeof(Animator))]
     [RequireComponent(typeof(GameplayInputManager))]
@@ -25,10 +26,10 @@ namespace ScrollShooter
 
         private void OnSwitchWeapon()
         {
-            _animator.SetTrigger(PlayerAnimatorParameters.SWAP_ARMED);
-            int weaponNumber = _animator.GetInteger(PlayerAnimatorParameters.WEAPON_NUMBER);
+            _animator.SetTrigger(EntityAnimatorParameters.SWAP_ARMED);
+            int weaponNumber = _animator.GetInteger(EntityAnimatorParameters.WEAPON_NUMBER);
             weaponNumber = weaponNumber == 0 ? 1 : 0;
-            _animator.SetInteger(PlayerAnimatorParameters.WEAPON_NUMBER, weaponNumber);
+            _animator.SetInteger(EntityAnimatorParameters.WEAPON_NUMBER, weaponNumber);
         }
     }
 }
