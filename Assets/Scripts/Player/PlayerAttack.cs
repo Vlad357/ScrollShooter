@@ -22,7 +22,7 @@ namespace ScrollShooter.Player
                 return _currentAmmo;
             }
 
-            protected set
+            set
             {
                 _currentAmmo = value;
                 try

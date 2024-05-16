@@ -6,6 +6,7 @@ namespace ScrollShooter.Entity
     public class EntityAttack : MonoBehaviour
     {
         public event Action OnSpawnRangeProjectile;
+        public event Action<EntityStats> OnSetCurrentAmmo;
 
         [SerializeField] protected LayerMask enemyLayerMask;
 
@@ -25,9 +26,21 @@ namespace ScrollShooter.Entity
             {
                 return _currentAmmo;
             }
-            protected set
+            set
             {
                 _currentAmmo = value;
+            }
+        }
+
+        public virtual int MaxAmmo
+        {
+            get
+            {
+                return _maxAmmo;
+            }
+            set
+            {
+                _maxAmmo = value;
             }
         }
 
@@ -47,7 +60,10 @@ namespace ScrollShooter.Entity
         {
             if (CurrentAmmo > 0)
             {
-                CurrentAmmo -= 1;
+                EntityStats entityStats = new EntityStats();
+                entityStats.currentAmmo = -1;
+
+                OnSetCurrentAmmo?.Invoke(entityStats);
 
                 OnSpawnRangeProjectile?.Invoke();
 

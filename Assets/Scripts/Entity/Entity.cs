@@ -4,32 +4,47 @@ using UnityEngine;
 namespace ScrollShooter.Entity
 {
     [RequireComponent(typeof(EntityHealth))]
-    public class Entity : MonoBehaviour
+    public class Entity : MonoBehaviour, IBuffable
     {
         private float _scoreEntity = 10f;
-        private EntityHealth _health;
+        private EntityHealth _entityHealth;
+        [SerializeField]private EntityAttack _entityAttack;
 
         private EntityStats _entityStats;
 
-        public EntityStats EntityStats
+        public EntityStats EntityCurrentStats
         {
             get { return _entityStats; }
             set
             {
                 _entityStats = value;
-                _health.Health = _entityStats.currentHealth;
-                _health.HealthMax = _entityStats.maxHealth;
+                _entityHealth.Health = _entityStats.currentHealth;
+                _entityHealth.HealthMax = _entityStats.maxHealth;
 
+                _entityAttack.CurrentAmmo = _entityStats.currentAmmo;
+                _entityAttack.MaxAmmo = _entityStats.maxAmmo;
             }
         }
 
         private void Start()
         {
-            _health = GetComponent<EntityHealth>();
-            _health.deathEvent += SetScoreOnDeath;
-            _health.OnSetDamage += SetStats;
+            try
+            {
+                _entityAttack = GetComponent<EntityAttack>();
+            }
+            catch
+            {
+                Debug.Log($"Component entity attack on object {gameObject.name} not found");
+            }
 
-            EntityStats = new EntityStats()
+            _entityHealth = GetComponent<EntityHealth>();
+
+            _entityAttack.OnSetCurrentAmmo += SetStats;
+
+            _entityHealth.deathEvent += SetScoreOnDeath;
+            _entityHealth.OnSetDamage += SetStats;
+
+            EntityCurrentStats = new EntityStats()
             {
                 maxHealth = 100,
                 currentHealth = 100,
@@ -40,14 +55,19 @@ namespace ScrollShooter.Entity
 
         private void SetStats(EntityStats stats)
         {
-            EntityStats = stats + _entityStats;
-            print(EntityStats.currentHealth);
+            EntityCurrentStats = stats + _entityStats;
         }
 
         private void SetScoreOnDeath(GameObject killer)
         {
             killer.TryGetComponent(out ScoreCounter counter);
             counter.SetScore(_scoreEntity);
+            print(killer.gameObject.name);
+        }
+
+        public void ApplyBaff(IBuff buff)
+        {
+            EntityCurrentStats = buff.ApplyStats(EntityCurrentStats);
         }
     }
 }
