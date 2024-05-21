@@ -1,4 +1,4 @@
-using ScrollShooter.Entity;
+using ScrollShooter.EntityScripts;
 using ScrollShooter.Input;
 using UnityEngine;
 

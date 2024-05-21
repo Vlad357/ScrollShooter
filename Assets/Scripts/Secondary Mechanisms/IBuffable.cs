@@ -1,5 +1,5 @@
 
-namespace ScrollShooter
+namespace ScrollShooter.SecondaryMechanisms
 {
     public interface IBuffable
     {

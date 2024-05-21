@@ -1,7 +1,8 @@
+using ScrollShooter.Input;
 using System;
 using UnityEngine;
 
-namespace ScrollShooter.Entity
+namespace ScrollShooter.EntityScripts
 {
     public class EntityMovement : MonoBehaviour
     {
@@ -20,11 +21,22 @@ namespace ScrollShooter.Entity
         
         protected float speed = 200f;
 
+        private void Start()
+        {
+            Init();
+        }
+
         public void StartJump()
         {
             _rigidbody2D.AddForce(Vector2.up * jumpForse, ForceMode2D.Impulse);
 
             _jumpStarted = true;
+        }
+
+        protected virtual void Init()
+        {
+            _rigidbody2D = GetComponent<Rigidbody2D>();
+            _animator = GetComponent<Animator>();
         }
 
 
@@ -37,7 +49,7 @@ namespace ScrollShooter.Entity
             _animator.SetTrigger(EntityAnimatorParameters.JUMP);
         }
 
-        protected void OnMovementPlayerAxisReceived(float axisValue)
+        protected virtual void OnMovementEntityAxisReceived(float axisValue)
         {
             InAirCheck();
 
@@ -90,7 +102,6 @@ namespace ScrollShooter.Entity
             {
                 _inAirStarted = true;
                 _animator.SetTrigger(EntityAnimatorParameters.IN_AIR_START);
-                print("in air start");
             }
 
             if (onGround && (_jumpStarted || _inAirStarted) & _rigidbody2D.velocity.y < 0)

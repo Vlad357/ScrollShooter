@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace ScrollShooter.Entity
+namespace ScrollShooter.EntityScripts
 {
     public class EntityAttack : MonoBehaviour
     {
@@ -11,54 +11,36 @@ namespace ScrollShooter.Entity
         [SerializeField] protected LayerMask enemyLayerMask;
 
         protected Animator _animator;
-
-        protected float _melleAttackRadius = 2f;
-        protected float _damageMelleAttack = 10f;
-
-        protected int _maxAmmo = 10;
-        protected int _currentAmmo;
+        protected Entity _entity;
 
         protected bool _attackReady = true;
 
-        public virtual int CurrentAmmo
+        private void Start()
         {
-            get
-            {
-                return _currentAmmo;
-            }
-            set
-            {
-                _currentAmmo = value;
-            }
-        }
-
-        public virtual int MaxAmmo
-        {
-            get
-            {
-                return _maxAmmo;
-            }
-            set
-            {
-                _maxAmmo = value;
-            }
+            Init();
         }
 
         public void MelleAttack()
         {
+            float attackRadius = _entity.EntityCurrentStats.melleAttackRadius;
+            float attackDamage = _entity.EntityCurrentStats.damageMelleAttack;
+
             Collider2D[] enemies =
-                Physics2D.OverlapCircleAll(transform.position, _melleAttackRadius, enemyLayerMask);
+                Physics2D.OverlapCircleAll(transform.position, attackRadius, enemyLayerMask);
 
             foreach (var enemy in enemies)
             {
-                enemy.GetComponent<EntityHealth>().SetDamage(_damageMelleAttack, gameObject);
-                Debug.Log(enemy.name);
+                if (!enemy.isTrigger)
+                {
+                    enemy.GetComponent<EntityHealthHandler>().SetDamage(attackDamage, gameObject);
+                    Debug.Log(enemy.name);
+                }
             }
         }
 
         public void SpawnProjectile()
         {
-            if (CurrentAmmo > 0)
+            if (_entity.EntityCurrentStats.currentAmmo > 0)
             {
                 EntityStats entityStats = new EntityStats();
                 entityStats.currentAmmo = -1;
@@ -66,8 +48,6 @@ namespace ScrollShooter.Entity
                 OnSetCurrentAmmo?.Invoke(entityStats);
 
                 OnSpawnRangeProjectile?.Invoke();
-
-                Debug.Log("range projectile spawned");
             }
         }
 
@@ -83,17 +63,21 @@ namespace ScrollShooter.Entity
             _animator.SetBool(EntityAnimatorParameters.ATTACK_PROCESS, true);
         }
 
-        protected void OnAttack()
+        protected virtual void Init()
         {
-            if (_attackReady)
-            {
-                _animator.SetTrigger(EntityAnimatorParameters.ATTACK);
-            }
+            _animator = GetComponent<Animator>();
+            _entity = GetComponent<Entity>();
         }
 
-        protected void ReloadAmmo()
+        protected void OnAttack()
         {
-            CurrentAmmo = _maxAmmo;
+            print("attack");
+
+            if (_attackReady)
+            {
+
+                _animator.SetTrigger(EntityAnimatorParameters.ATTACK);
+            }
         }
     }
 }

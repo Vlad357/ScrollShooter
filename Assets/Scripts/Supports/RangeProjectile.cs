@@ -1,4 +1,4 @@
-using ScrollShooter.Entity;
+using ScrollShooter.EntityScripts;
 using System;
 using UnityEngine;
 
@@ -32,7 +32,7 @@ namespace ScrollShooter.Supports
             {
                 return;
             }
-            if (other.gameObject.TryGetComponent(out EntityHealth enemy))
+            if (other.gameObject.TryGetComponent(out EntityHealthHandler enemy))
             {
                 enemy.SetDamage(damagePoints, owner);
             }

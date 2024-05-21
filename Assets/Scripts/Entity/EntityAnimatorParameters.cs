@@ -1,4 +1,4 @@
-namespace ScrollShooter.Entity
+namespace ScrollShooter.EntityScripts
 {
     public class EntityAnimatorParameters
     {

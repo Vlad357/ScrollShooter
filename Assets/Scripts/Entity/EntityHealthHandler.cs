@@ -1,0 +1,38 @@
+using ScrollShooter.Supports;
+using System;
+using UnityEngine;
+
+namespace ScrollShooter.EntityScripts
+{
+    public class EntityHealthHandler : MonoBehaviour
+    {
+        public event Action<EntityStats> OnSetDamage;
+        public event Action<GameObject> OnSetDamageDealer;
+
+        private Entity _entity;
+        private Animator _animator;
+
+        private void Start()
+        {
+            _entity = GetComponent<Entity>();
+            _animator = GetComponent<Animator>();
+        }
+
+        public void SetDamage(float damage, GameObject damageDealer)
+        {
+            if (_entity.EntityCurrentStats.currentHealth > 0 && damage > 0)
+            {
+                EntityStats entityStats = new EntityStats();
+                entityStats.currentHealth = -damage;
+
+                if (!_animator.GetBool(EntityAnimatorParameters.ATTACK_PROCESS))
+                {
+                    _animator.SetTrigger(EntityAnimatorParameters.TAKE_HIT);
+                }
+
+                OnSetDamageDealer?.Invoke(damageDealer);
+                OnSetDamage?.Invoke(entityStats);
+            }
+        }
+    }
+}

@@ -1,4 +1,4 @@
-using ScrollShooter.Entity;
+using ScrollShooter.EntityScripts;
 using System.Collections;
 using UnityEngine;
 
@@ -14,7 +14,7 @@ namespace ScrollShooter.SecondaryMechanisms
             GameObject collisionObject = collision.gameObject;
             if (collisionObject.CompareTag("Player"))
             {
-                EntityHealth health = collisionObject.GetComponent<EntityHealth>();
+                EntityHealthHandler health = collisionObject.GetComponent<EntityHealthHandler>();
                 StartCoroutine(TickDamage(health));
             }
         }
@@ -27,7 +27,7 @@ namespace ScrollShooter.SecondaryMechanisms
             }
         }
 
-        private IEnumerator TickDamage(EntityHealth health)
+        private IEnumerator TickDamage(EntityHealthHandler health)
         {
             health.SetDamage(damage, gameObject);
             yield return new WaitForSeconds(tickTime);

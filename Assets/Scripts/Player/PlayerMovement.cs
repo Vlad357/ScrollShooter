@@ -1,4 +1,4 @@
-using ScrollShooter.Entity;
+using ScrollShooter.EntityScripts;
 using ScrollShooter.Input;
 using UnityEngine;
 
@@ -12,19 +12,18 @@ namespace ScrollShooter.Player
     {
 
         protected GameplayInputManager _gameplayInput;
-        private void Start()
+        protected override void Init()
         {
+            base.Init();
             _gameplayInput = GetComponent<GameplayInputManager>();
-            _rigidbody2D = GetComponent<Rigidbody2D>();
-            _animator = GetComponent<Animator>();
-            
+
             InitGameplayInput(_gameplayInput);
         }
 
 
         private void InitGameplayInput(GameplayInputManager gameplayInputManager)
         {
-            gameplayInputManager.MovementPlayerAxisReceived += OnMovementPlayerAxisReceived;
+            gameplayInputManager.MovementPlayerAxisReceived += OnMovementEntityAxisReceived;
             gameplayInputManager.JumpEventRecived += OnJumpEventRecived;
         }
 

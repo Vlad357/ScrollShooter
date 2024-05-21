@@ -1,6 +1,6 @@
-using ScrollShooter.Entity;
+using ScrollShooter.EntityScripts;
 
-namespace ScrollShooter 
+namespace ScrollShooter.SecondaryMechanisms 
 {
     public interface IBuff
     {

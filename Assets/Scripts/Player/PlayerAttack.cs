@@ -1,7 +1,6 @@
-using ScrollShooter.Entity;
+using ScrollShooter.EntityScripts;
 using ScrollShooter.Input;
 using ScrollShooter.Supports;
-using TMPro;
 using UnityEngine;
 
 namespace ScrollShooter.Player
@@ -10,52 +9,29 @@ namespace ScrollShooter.Player
     [RequireComponent(typeof(GameplayInputManager))]
     public class PlayerAttack : EntityAttack
     {
-        public TextMeshProUGUI ammoTextMeshCounter;
         public GameObject projecctileObject;
         
         private GameplayInputManager _gameplayInputManager;
 
-        public override int CurrentAmmo
+        private void OnSpawnPlayerRangeProjectile()
         {
-            get
-            {
-                return _currentAmmo;
-            }
+            Vector2 spawnProjectilePosition =
+                    new Vector2(transform.position.x + transform.localScale.x/2, transform.position.y);
 
-            set
-            {
-                _currentAmmo = value;
-                try
-                {
-                    ammoTextMeshCounter.text = CurrentAmmo.ToString();
-                }
-                catch
-                {
-                    Debug.LogError($"ammoTextMeshCounter has not assigned");
-                }
-            }
+            Instantiate(projecctileObject, spawnProjectilePosition, Quaternion.identity)
+                .GetComponent<RangeProjectile>().ParametersInit(transform.localScale.x, gameObject);
         }
 
-        private void Start()
+        protected override void Init()
         {
-            _animator = GetComponent<Animator>();
+            base.Init();
+
             _gameplayInputManager = GetComponent<GameplayInputManager>();
-            
+
             _gameplayInputManager.Attack += OnAttack;
             _gameplayInputManager.CansledActiveAction += ReadyAttackTurnOn;
 
             OnSpawnRangeProjectile += OnSpawnPlayerRangeProjectile;
-
-            ReloadAmmo();
-        }
-
-        private void OnSpawnPlayerRangeProjectile()
-        {
-            Vector2 spawnProjectilePosition =
-                    new Vector2(transform.position.x + transform.localScale.x, transform.position.y);
-
-            Instantiate(projecctileObject, spawnProjectilePosition, Quaternion.identity)
-                .GetComponent<RangeProjectile>().ParametersInit(transform.localScale.x, gameObject);
         }
     }
 }

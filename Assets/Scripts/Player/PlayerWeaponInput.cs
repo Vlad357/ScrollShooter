@@ -20,7 +20,6 @@ namespace ScrollShooter.Player
         
         private void InitInputPort(PlayerInputMap input)
         {
-            Debug.Log("init");
             input.Player.SwitchWeapon.started  += SwitchWeaponOnperformed;
             input.Player.Attack.performed += AttackOnperformed;
         }

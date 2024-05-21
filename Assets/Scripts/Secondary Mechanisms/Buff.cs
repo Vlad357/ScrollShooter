@@ -1,4 +1,4 @@
-using ScrollShooter.Entity;
+using ScrollShooter.EntityScripts;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +7,7 @@ namespace ScrollShooter.SecondaryMechanisms
 {
     public class Buff : MonoBehaviour, IBuff
     {
-        [SerializeField] private string tag;
+        [SerializeField] private string _tag;
 
         [Header("buffs")]
         public float health;
@@ -30,7 +30,7 @@ namespace ScrollShooter.SecondaryMechanisms
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.gameObject.CompareTag(tag) && 
+            if (collision.gameObject.CompareTag(_tag) && 
                 collision.gameObject.TryGetComponent( out IBuffable buffable))
             {
                 buffable.ApplyBaff(this);
