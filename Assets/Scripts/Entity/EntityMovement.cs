@@ -10,6 +10,7 @@ namespace ScrollShooter.EntityScripts
 
         protected Rigidbody2D _rigidbody2D;
         protected Animator _animator;
+        protected Entity _entity;
 
         protected bool _jumpStarted = false, _inAirStarted = false;
         
@@ -20,6 +21,7 @@ namespace ScrollShooter.EntityScripts
         protected float _groundJumpSideDirectionX = 0.25f;
         
         protected float speed = 200f;
+        private bool _freezeMovement = false;
 
         private void Start()
         {
@@ -33,10 +35,19 @@ namespace ScrollShooter.EntityScripts
             _jumpStarted = true;
         }
 
+        private void FreezeMovement()
+        {
+            _freezeMovement = true;
+        }
+
+
         protected virtual void Init()
         {
             _rigidbody2D = GetComponent<Rigidbody2D>();
             _animator = GetComponent<Animator>();
+            _entity = GetComponent<Entity>();
+
+            _entity.OnDeath += FreezeMovement;
         }
 
 
@@ -51,6 +62,8 @@ namespace ScrollShooter.EntityScripts
 
         protected virtual void OnMovementEntityAxisReceived(float axisValue)
         {
+            if (_freezeMovement) return;
+
             InAirCheck();
 
             if (axisValue != 0)

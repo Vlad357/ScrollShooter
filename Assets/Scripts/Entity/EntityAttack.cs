@@ -67,6 +67,8 @@ namespace ScrollShooter.EntityScripts
         {
             _animator = GetComponent<Animator>();
             _entity = GetComponent<Entity>();
+
+            _entity.OnDeath += ReadyAttackTurnOff;
         }
 
         protected void OnAttack()

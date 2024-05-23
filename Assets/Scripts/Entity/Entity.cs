@@ -14,8 +14,11 @@ namespace ScrollShooter.EntityScripts
         public event Action<float, float> OnSetHealthView;
         public event Action<float, float> OnSetAmmoView;
 
+        public event Action OnDeath;
+
         private EntityHealthHandler _entityHealth;
         private EntityAttack _entityAttack;
+        private EntityDeath _entityDeath;
 
         private EntityStats _entityStats;
 
@@ -55,15 +58,23 @@ namespace ScrollShooter.EntityScripts
             OnSetDamageDealer?.Invoke(damageDealer);
         }
 
+        private void OnDeathEvent()
+        {
+            OnDeath?.Invoke();
+        }
+
         protected virtual void Init()
         {
             _entityAttack = GetComponent<EntityAttack>();
             _entityHealth = GetComponent<EntityHealthHandler>();
+            _entityDeath = GetComponent<EntityDeath>();
 
             _entityAttack.OnSetCurrentAmmo += SetStats;
 
             _entityHealth.OnSetDamage += SetStats;
             _entityHealth.OnSetDamageDealer += SetDamageDealer;
+
+            _entityDeath.OnEntityDeath += OnDeathEvent;
 
             EntityCurrentStats = new EntityStats()
             {

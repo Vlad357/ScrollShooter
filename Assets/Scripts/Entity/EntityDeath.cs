@@ -1,4 +1,5 @@
 using ScrollShooter.Supports;
+using System;
 using UnityEngine;
 
 namespace ScrollShooter.EntityScripts
@@ -6,7 +7,10 @@ namespace ScrollShooter.EntityScripts
     [RequireComponent(typeof(Entity))]
     public class EntityDeath : MonoBehaviour
     {
+        public event Action OnEntityDeath;
+
         private Entity _entity;
+        private Animator _animator;
 
         public GameObject DamageDealer { get; private set; }
 
@@ -15,8 +19,14 @@ namespace ScrollShooter.EntityScripts
         private void Start()
         {
             _entity = GetComponent<Entity>();
+            _animator = GetComponent<Animator>();
             _entity.OnCheckHealth += CheckCurrentHealth;
             _entity.OnSetDamageDealer += SetDamageDealer;
+        }
+
+        public void Death()
+        {
+            Destroy(gameObject);
         }
 
         private void CheckCurrentHealth(EntityStats stats)
@@ -24,6 +34,8 @@ namespace ScrollShooter.EntityScripts
             if(stats.currentHealth <= 0)
             {
                 SetScoreOnDeath(DamageDealer);
+                _animator.SetTrigger(EntityAnimatorParameters.DEATH);
+                OnEntityDeath?.Invoke();
             }
         }
 
