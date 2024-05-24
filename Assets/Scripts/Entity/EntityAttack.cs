@@ -23,7 +23,6 @@ namespace ScrollShooter.EntityScripts
         public void MelleAttack()
         {
             float attackRadius = _entity.EntityCurrentStats.melleAttackRadius;
-            float attackDamage = _entity.EntityCurrentStats.damageMelleAttack;
 
             Collider2D[] enemies =
                 Physics2D.OverlapCircleAll(transform.position, attackRadius, enemyLayerMask);
@@ -32,7 +31,8 @@ namespace ScrollShooter.EntityScripts
             {
                 if (!enemy.isTrigger)
                 {
-                    enemy.GetComponent<EntityHealthHandler>().SetDamage(attackDamage, gameObject);
+                    EntityHealthHandler entityHealthHandler = enemy.GetComponent<EntityHealthHandler>();
+                    SetDamageOnEntityHealthHandler(entityHealthHandler);
                     Debug.Log(enemy.name);
                 }
             }
@@ -69,6 +69,13 @@ namespace ScrollShooter.EntityScripts
             _entity = GetComponent<Entity>();
 
             _entity.OnDeath += ReadyAttackTurnOff;
+        }
+
+        protected void SetDamageOnEntityHealthHandler(EntityHealthHandler entityHealthHandler)
+        {
+            float attackDamage = _entity.EntityCurrentStats.damageMelleAttack;
+
+            entityHealthHandler.SetDamage(attackDamage, gameObject);
         }
 
         protected void OnAttack()
