@@ -5,6 +5,8 @@ namespace ScrollShooter.EntityScripts
 {
     public class EntityAttack : MonoBehaviour
     {
+        public event Action<bool> OnAttackProcess;
+
         public event Action OnSpawnRangeProjectile;
         public event Action<EntityStats> OnSetCurrentAmmo;
 
@@ -14,6 +16,7 @@ namespace ScrollShooter.EntityScripts
         protected Entity _entity;
 
         protected bool _attackReady = true;
+        protected bool _attackIsInpossible = false;
 
         private void Start()
         {
@@ -54,13 +57,23 @@ namespace ScrollShooter.EntityScripts
         public void ReadyAttackTurnOn()
         {
             _attackReady = true;
-            _animator.SetBool(EntityAnimatorParameters.ATTACK_PROCESS, false);
         }
 
         public void ReadyAttackTurnOff()
         {
             _attackReady = false;
+        }
+
+        public void AttackProcessTurnOn()
+        {
             _animator.SetBool(EntityAnimatorParameters.ATTACK_PROCESS, true);
+            OnAttackProcess?.Invoke(true);
+        }
+
+        public void AttackProcessTurnOff()
+        {
+            _animator.SetBool(EntityAnimatorParameters.ATTACK_PROCESS, false);
+            OnAttackProcess?.Invoke(false);
         }
 
         protected virtual void Init()
@@ -68,7 +81,7 @@ namespace ScrollShooter.EntityScripts
             _animator = GetComponent<Animator>();
             _entity = GetComponent<Entity>();
 
-            _entity.OnDeath += ReadyAttackTurnOff;
+            _entity.OnDeath += AttackIsInpossible;
         }
 
         protected void SetDamageOnEntityHealthHandler(EntityHealthHandler entityHealthHandler)
@@ -78,15 +91,18 @@ namespace ScrollShooter.EntityScripts
             entityHealthHandler.SetDamage(attackDamage, gameObject);
         }
 
-        protected void OnAttack()
+        protected virtual void OnAttack()
         {
-            print("attack");
-
-            if (_attackReady)
+            if (_attackReady && !_attackIsInpossible)
             {
 
                 _animator.SetTrigger(EntityAnimatorParameters.ATTACK);
             }
+        }
+
+        private void AttackIsInpossible()
+        {
+            _attackIsInpossible = true;
         }
     }
 }

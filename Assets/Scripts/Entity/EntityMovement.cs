@@ -40,6 +40,10 @@ namespace ScrollShooter.EntityScripts
             _freezeMovement = true;
         }
 
+        private void FreezeMovement(bool value)
+        {
+            _freezeMovement = value;
+        }
 
         protected virtual void Init()
         {
@@ -48,6 +52,7 @@ namespace ScrollShooter.EntityScripts
             _entity = GetComponent<Entity>();
 
             _entity.OnDeath += FreezeMovement;
+            _entity.OnFreezeMovement += FreezeMovement;
         }
 
 
@@ -62,7 +67,12 @@ namespace ScrollShooter.EntityScripts
 
         protected virtual void OnMovementEntityAxisReceived(float axisValue)
         {
-            if (_freezeMovement) return;
+
+            if (_freezeMovement)
+            {
+                _rigidbody2D.velocity = new Vector2(0, _rigidbody2D.velocity.y);
+                return;
+            }
 
             InAirCheck();
 

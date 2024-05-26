@@ -25,13 +25,18 @@ namespace ScrollShooter.EntityScripts
                 EntityStats entityStats = new EntityStats();
                 entityStats.currentHealth = -damage;
 
-                if (!_animator.GetBool(EntityAnimatorParameters.ATTACK_PROCESS))
-                {
-                    _animator.SetTrigger(EntityAnimatorParameters.TAKE_HIT);
-                }
+                TakeHit();
 
                 OnSetDamageDealer?.Invoke(damageDealer);
                 OnSetDamage?.Invoke(entityStats);
+            }
+        }
+
+        protected virtual void TakeHit()
+        {
+            if (!_animator.GetBool(EntityAnimatorParameters.ATTACK_PROCESS))
+            {
+                _animator.SetTrigger(EntityAnimatorParameters.TAKE_HIT);
             }
         }
     }

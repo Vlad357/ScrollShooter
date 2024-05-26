@@ -6,6 +6,7 @@ namespace ScrollShooter.EntityScripts.Enemy
 {
     [RequireComponent(typeof(EnemyMoveAttackHandler))]
     [RequireComponent(typeof(EnemyAggravated))]
+    [RequireComponent(typeof(EnemyHeathHandler))]
     public class Enemy : Entity
     {
         public event Action<bool> OnSetTarget;

@@ -97,6 +97,13 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
+  - time: 0.016666668
+    functionName: AttackProcessTurnOn
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: 5
     functionName: MelleAttack
     data: 
@@ -104,8 +111,8 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 7
-    functionName: ReadyAttackTurnOn
+  - time: 8
+    functionName: AttackProcessTurnOff
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

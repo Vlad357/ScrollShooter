@@ -14,6 +14,7 @@ namespace ScrollShooter.EntityScripts
         public event Action<float, float> OnSetHealthView;
         public event Action<float, float> OnSetAmmoView;
 
+        public event Action<bool> OnFreezeMovement;
         public event Action OnDeath;
 
         private EntityHealthHandler _entityHealth;
@@ -63,6 +64,11 @@ namespace ScrollShooter.EntityScripts
             OnDeath?.Invoke();
         }
 
+        private void OnFreezeMovementEvent(bool value)
+        {
+            OnFreezeMovement?.Invoke(value);
+        }
+
         protected virtual void Init()
         {
             _entityAttack = GetComponent<EntityAttack>();
@@ -70,6 +76,7 @@ namespace ScrollShooter.EntityScripts
             _entityDeath = GetComponent<EntityDeath>();
 
             _entityAttack.OnSetCurrentAmmo += SetStats;
+            _entityAttack.OnAttackProcess += OnFreezeMovementEvent;
 
             _entityHealth.OnSetDamage += SetStats;
             _entityHealth.OnSetDamageDealer += SetDamageDealer;
