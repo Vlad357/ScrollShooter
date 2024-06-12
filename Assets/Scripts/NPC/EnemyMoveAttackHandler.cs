@@ -25,14 +25,16 @@ namespace ScrollShooter.EntityScripts.Enemy
 
         private void EnemyOnMove()
         {
+            if (_enemy.Target == null) return;
+
             float distance = Vector2.Distance(_enemy.Target.transform.position ,transform.position);
 
-            if(distance < _enemy.EntityCurrentStats.melleAttackRadius)
+            if(distance < _enemy.EntityCurrentStats.attackRadius)
             {
                 OnAttack?.Invoke();
             }
 
-            OnMovementReady?.Invoke(distance > _enemy.EntityCurrentStats.melleAttackRadius);
+            OnMovementReady?.Invoke(distance > _enemy.EntityCurrentStats.attackRadius);
         }
     }
 }

@@ -35,6 +35,7 @@ namespace ScrollShooter.EntityScripts.Enemy
             _enemyAggravated = GetComponent<EnemyAggravated>();
 
             _enemyAggravated.SetAggravatedTarget += OnAggravatedTarget;
+            _enemyAggravated.OnUnaggrevated += OnUnaggravatedTarget;
         }
 
 
@@ -43,6 +44,14 @@ namespace ScrollShooter.EntityScripts.Enemy
             _target = target;
 
             OnSetTarget?.Invoke(_target != null);
+        }
+
+        private void OnUnaggravatedTarget()
+        {
+            _target = null;
+
+            OnSetTarget?.Invoke(_target != null);
+
         }
     }
 }

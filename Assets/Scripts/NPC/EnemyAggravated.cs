@@ -11,11 +11,19 @@ namespace ScrollShooter.EntityScripts.Enemy
         public event Action OnUnaggrevated;
 
         private Animator _animator;
+        private EntityDeath _entityDeath;
         private GameObject _detectTarget;
+
+        private bool IsAggrable;
 
         private void Start()
         {
             _animator = GetComponent<Animator>();
+            _entityDeath = GetComponent<EntityDeath>();
+
+            _entityDeath.OnEntityDeath += () => { 
+                SetAggrable(false); 
+            };
         }
 
         public void OnAggravated()
@@ -28,9 +36,14 @@ namespace ScrollShooter.EntityScripts.Enemy
             OnUnaggrevated?.Invoke();
         }
 
+        private void SetAggrable(bool value)
+        {
+            IsAggrable = value;
+        }
+
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.CompareTag("Player"))
+            if (collision.CompareTag("Player") && IsAggrable)
             {
                 _animator.SetTrigger(EnemyAnimatorParameters.AGGRAVATED);
                 _detectTarget = collision.gameObject;

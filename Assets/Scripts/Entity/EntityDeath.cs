@@ -1,6 +1,7 @@
 using ScrollShooter.Supports;
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace ScrollShooter.EntityScripts
 {
@@ -24,10 +25,11 @@ namespace ScrollShooter.EntityScripts
             _entity.OnSetDamageDealer += SetDamageDealer;
         }
 
-        public void Death()
+        public virtual void Death()
         {
             Destroy(gameObject);
         }
+
 
         private void CheckCurrentHealth(EntityStats stats)
         {

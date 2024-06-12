@@ -1,3 +1,4 @@
+using ScrollShooter.Supports;
 using System;
 using UnityEngine;
 
@@ -7,8 +8,9 @@ namespace ScrollShooter.EntityScripts
     {
         public event Action<bool> OnAttackProcess;
 
-        public event Action OnSpawnRangeProjectile;
         public event Action<EntityStats> OnSetCurrentAmmo;
+
+        public GameObject projecctileObject;
 
         [SerializeField] protected LayerMask enemyLayerMask;
 
@@ -25,7 +27,7 @@ namespace ScrollShooter.EntityScripts
 
         public void MelleAttack()
         {
-            float attackRadius = _entity.EntityCurrentStats.melleAttackRadius;
+            float attackRadius = _entity.EntityCurrentStats.attackRadius;
 
             Collider2D[] enemies =
                 Physics2D.OverlapCircleAll(transform.position, attackRadius, enemyLayerMask);
@@ -50,7 +52,7 @@ namespace ScrollShooter.EntityScripts
 
                 OnSetCurrentAmmo?.Invoke(entityStats);
 
-                OnSpawnRangeProjectile?.Invoke();
+                OnSpawnRangeProjectile();
             }
         }
 
@@ -103,6 +105,15 @@ namespace ScrollShooter.EntityScripts
         private void AttackIsInpossible()
         {
             _attackIsInpossible = true;
+        }
+
+        private void OnSpawnRangeProjectile()
+        {
+            Vector2 spawnProjectilePosition =
+                    new Vector2(transform.position.x + transform.localScale.x / 2, transform.position.y);
+
+            Instantiate(projecctileObject, spawnProjectilePosition, Quaternion.identity)
+                .GetComponent<RangeProjectile>().ParametersInit(transform.localScale.x, gameObject);
         }
     }
 }

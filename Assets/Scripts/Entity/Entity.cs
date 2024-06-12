@@ -17,16 +17,17 @@ namespace ScrollShooter.EntityScripts
         public event Action<bool> OnFreezeMovement;
         public event Action OnDeath;
 
+        protected EntityDeath _entityDeath;
+
         private EntityHealthHandler _entityHealth;
         private EntityAttack _entityAttack;
-        private EntityDeath _entityDeath;
 
         private EntityStats _entityStats;
 
         public EntityStats EntityCurrentStats
         {
             get { return _entityStats; }
-            private set
+            protected set
             {
                 _entityStats = value;
                 OnSetHealthView?.Invoke(_entityStats.currentHealth, _entityStats.maxHealth);
@@ -49,7 +50,6 @@ namespace ScrollShooter.EntityScripts
             EntityCurrentStats = stats + _entityStats;
             if(stats.currentHealth != 0)
             {
-                print(EntityCurrentStats.currentHealth);
                 OnCheckHealth?.Invoke(EntityCurrentStats);
             }
         }
@@ -83,11 +83,16 @@ namespace ScrollShooter.EntityScripts
 
             _entityDeath.OnEntityDeath += OnDeathEvent;
 
+            InitEntityStats();
+        }
+
+        protected virtual void InitEntityStats()
+        {
             EntityCurrentStats = new EntityStats()
             {
                 maxHealth = EntityStatsConfig.MAX_HEALTH,
                 currentHealth = EntityStatsConfig.START_HEALTH,
-                melleAttackRadius = EntityStatsConfig.MELLE_ATTACK_RADIUS,
+                attackRadius = EntityStatsConfig.MELLE_ATTACK_RADIUS,
                 damageMelleAttack = EntityStatsConfig.DAMAGE_MELLE_ATTACK,
                 maxAmmo = EntityStatsConfig.MAX_AMMO,
                 currentAmmo = EntityStatsConfig.START_AMMO

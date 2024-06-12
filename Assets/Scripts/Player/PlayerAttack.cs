@@ -9,18 +9,7 @@ namespace ScrollShooter.Player
     [RequireComponent(typeof(GameplayInputManager))]
     public class PlayerAttack : EntityAttack
     {
-        public GameObject projecctileObject;
-        
         private GameplayInputManager _gameplayInputManager;
-
-        private void OnSpawnPlayerRangeProjectile()
-        {
-            Vector2 spawnProjectilePosition =
-                    new Vector2(transform.position.x + transform.localScale.x/2, transform.position.y);
-
-            Instantiate(projecctileObject, spawnProjectilePosition, Quaternion.identity)
-                .GetComponent<RangeProjectile>().ParametersInit(transform.localScale.x, gameObject);
-        }
 
         protected override void Init()
         {
@@ -30,8 +19,6 @@ namespace ScrollShooter.Player
 
             _gameplayInputManager.Attack += OnAttack;
             _gameplayInputManager.CansledActiveAction += ReadyAttackTurnOn;
-
-            OnSpawnRangeProjectile += OnSpawnPlayerRangeProjectile;
         }
     }
 }
