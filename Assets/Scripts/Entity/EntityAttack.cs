@@ -13,6 +13,7 @@ namespace ScrollShooter.EntityScripts
         public GameObject projecctileObject;
 
         [SerializeField] protected LayerMask enemyLayerMask;
+        [SerializeField] protected Vector2 spawnProjectileOffset;
 
         protected Animator _animator;
         protected Entity _entity;
@@ -83,6 +84,7 @@ namespace ScrollShooter.EntityScripts
             _animator = GetComponent<Animator>();
             _entity = GetComponent<Entity>();
 
+            _entity.OnStartJumpEvent += AttackProcessTurnOff;
             _entity.OnDeath += AttackIsInpossible;
         }
 
@@ -109,8 +111,9 @@ namespace ScrollShooter.EntityScripts
 
         private void OnSpawnRangeProjectile()
         {
-            Vector2 spawnProjectilePosition =
-                    new Vector2(transform.position.x + transform.localScale.x / 2, transform.position.y);
+            Vector2 spawnProjectilePosition = new Vector2
+                (transform.position.x + spawnProjectileOffset.x * transform.localScale.x,
+                transform.position.y + spawnProjectileOffset.y);
 
             Instantiate(projecctileObject, spawnProjectilePosition, Quaternion.identity)
                 .GetComponent<RangeProjectile>().ParametersInit(transform.localScale.x, gameObject);

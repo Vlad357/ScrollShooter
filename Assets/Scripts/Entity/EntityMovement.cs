@@ -6,6 +6,8 @@ namespace ScrollShooter.EntityScripts
 {
     public class EntityMovement : MonoBehaviour
     {
+        public event Action OnStartJumpEvent;
+
         [SerializeField] protected LayerMask groundLayer;
 
         protected Rigidbody2D _rigidbody2D;
@@ -31,6 +33,8 @@ namespace ScrollShooter.EntityScripts
         public void StartJump()
         {
             _rigidbody2D.AddForce(Vector2.up * jumpForse, ForceMode2D.Impulse);
+
+            OnStartJumpEvent?.Invoke();
 
             _jumpStarted = true;
         }

@@ -14,7 +14,7 @@ namespace ScrollShooter.EntityScripts.Enemy
         private EntityDeath _entityDeath;
         private GameObject _detectTarget;
 
-        private bool IsAggrable;
+        private bool IsAggrable = true;
 
         private void Start()
         {
