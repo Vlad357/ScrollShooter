@@ -37,6 +37,11 @@ namespace ScrollShooter.EntityScripts.Enemy
         private void TargetOnSet(bool value)
         {
             _isTargetSet = value;
+
+            if (!_isTargetSet)
+            {
+                OnMovementEntityAxisReceived(0);
+            }
         }
 
 
@@ -49,8 +54,8 @@ namespace ScrollShooter.EntityScripts.Enemy
                 if (!_isMovingReady) return;
 
                 float axis = _enemy.Target.transform.position.x - transform.position.x;
-                float axisNormalized = Mathf.Clamp(axis, _axisMin, _axisMax);
-                OnMovementEntityAxisReceived(axisNormalized);
+                int axisClamped = (int)Mathf.Clamp(axis, _axisMin, _axisMax);
+                OnMovementEntityAxisReceived(axisClamped);
             }
         }
 

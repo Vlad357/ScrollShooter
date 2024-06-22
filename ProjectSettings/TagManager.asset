@@ -41,3 +41,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Game2D
+    uniqueID: 1730814997
+    locked: 0
+  - name: UI
+    uniqueID: 1777821069
+    locked: 0

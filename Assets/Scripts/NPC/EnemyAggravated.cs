@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace ScrollShooter.EntityScripts.Enemy
@@ -12,7 +10,9 @@ namespace ScrollShooter.EntityScripts.Enemy
 
         private Animator _animator;
         private EntityDeath _entityDeath;
-        private GameObject _detectTarget;
+        private EnemyHeathHandler _enemyHealthHandler;
+
+        [SerializeField]private GameObject _detectTarget;
 
         private bool IsAggrable = true;
 
@@ -20,15 +20,35 @@ namespace ScrollShooter.EntityScripts.Enemy
         {
             _animator = GetComponent<Animator>();
             _entityDeath = GetComponent<EntityDeath>();
+            _enemyHealthHandler = GetComponent<EnemyHeathHandler>();
 
             _entityDeath.OnEntityDeath += () => { 
                 SetAggrable(false); 
             };
+            _enemyHealthHandler.SetDamageEventOnTarget += OnSetTarget;
         }
 
         public void OnAggravated()
         {
             SetAggravatedTarget?.Invoke(_detectTarget);
+        }
+
+        public void OnSetTarget(GameObject target)
+        {
+            if (target == null)
+            {
+                _detectTarget = null;
+                OnUnaggrevatedEvent();
+                return;
+            }
+
+            if(_detectTarget != null)
+            {
+                return;
+            }
+
+            _detectTarget = target;
+            _animator.SetTrigger(EnemyAnimatorParameters.AGGRAVATED);
         }
 
         private void OnUnaggrevatedEvent()
@@ -45,8 +65,7 @@ namespace ScrollShooter.EntityScripts.Enemy
         {
             if (collision.CompareTag("Player") && IsAggrable)
             {
-                _animator.SetTrigger(EnemyAnimatorParameters.AGGRAVATED);
-                _detectTarget = collision.gameObject;
+                OnSetTarget(collision.gameObject);
             }
         }
 
@@ -54,7 +73,7 @@ namespace ScrollShooter.EntityScripts.Enemy
         {
             if (collision.CompareTag("Player"))
             {
-                OnUnaggrevatedEvent();
+                OnSetTarget(null);
             }
         }
     }

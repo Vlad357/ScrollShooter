@@ -21,10 +21,10 @@ namespace ScrollShooter.Player
         private void InitInputPort(PlayerInputMap input)
         {
             input.Player.SwitchWeapon.started  += SwitchWeaponOnperformed;
-            input.Player.Attack.performed += AttackOnperformed;
+            input.Player.Attack.started += AttackOnStarted;
         }
 
-        private void AttackOnperformed(InputAction.CallbackContext obj)
+        private void AttackOnStarted(InputAction.CallbackContext obj)
         {
             OnAttackWeapon?.Invoke();
         }

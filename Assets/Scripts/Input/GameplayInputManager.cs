@@ -13,6 +13,8 @@ namespace ScrollShooter.Input
         public event Action Attack;
 
         public event Action CansledActiveAction;
+
+        public RectTransform TouchedPanel;
         
         private PlayerMovementInput _playerMovementInput;
         private PlayerWeaponInput _playerWeaponInput;
@@ -67,7 +69,13 @@ namespace ScrollShooter.Input
         
         private void PlayerWeaponInputOnAttack()
         {
-            Attack?.Invoke();
+            Vector2 touchPosition = _input.Player.TouchPosition.ReadValue<Vector2>();
+            bool touch = RectTransformUtility.RectangleContainsScreenPoint(TouchedPanel, touchPosition);
+
+            if (touch && TouchedPanel.gameObject.activeSelf)
+            {
+                Attack?.Invoke();
+            }
         }
     }
 }

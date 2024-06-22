@@ -9,6 +9,7 @@ namespace ScrollShooter.EntityScripts
     public class EntityDeath : MonoBehaviour
     {
         public event Action OnEntityDeath;
+        public UnityEvent OnEntityDeathUnityEvent;
 
         private Entity _entity;
         private Animator _animator;
@@ -38,6 +39,7 @@ namespace ScrollShooter.EntityScripts
                 SetScoreOnDeath(DamageDealer);
                 _animator.SetTrigger(EntityAnimatorParameters.DEATH);
                 OnEntityDeath?.Invoke();
+                OnEntityDeathUnityEvent?.Invoke();
             }
         }
 

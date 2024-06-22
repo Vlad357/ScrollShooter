@@ -18,18 +18,20 @@ namespace ScrollShooter.EntityScripts
             _animator = GetComponent<Animator>();
         }
 
-        public void SetDamage(float damage, GameObject damageDealer)
+        public virtual void SetDamage(float damage, GameObject damageDealer)
         {
-            if (_entity.EntityCurrentStats.currentHealth > 0 && damage > 0)
+            if (_entity.EntityCurrentStats.currentHealth < 0 && damage < 0)
             {
-                EntityStats entityStats = new EntityStats();
-                entityStats.currentHealth = -damage;
-
-                TakeHit();
-
-                OnSetDamageDealer?.Invoke(damageDealer);
-                OnSetDamage?.Invoke(entityStats);
+                return;
             }
+
+            EntityStats entityStats = new EntityStats();
+            entityStats.currentHealth = -damage;
+
+            TakeHit();
+
+            OnSetDamageDealer?.Invoke(damageDealer);
+            OnSetDamage?.Invoke(entityStats);
         }
 
         protected virtual void TakeHit()

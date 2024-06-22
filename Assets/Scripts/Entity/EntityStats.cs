@@ -25,13 +25,19 @@ namespace ScrollShooter.EntityScripts
 
         public static EntityStats operator +(EntityStats a, EntityStats b)
         {
-            return new EntityStats(a.currentHealth + b.currentHealth, 
-                a.maxHealth + b.maxHealth, 
-                a.attackRadius + b.attackRadius,
-                a.rangeAttackRadius + b.rangeAttackRadius,
-                a.damageMelleAttack + b.damageMelleAttack,
-                a.currentAmmo + b.currentAmmo,
-                a.maxAmmo + b.maxAmmo);
+            a.currentHealth += b.currentHealth;
+            if(a.currentHealth > a.maxHealth + b.maxHealth)
+            {
+                a.currentHealth = a.maxHealth + b.maxHealth;
+            }
+            a.maxHealth += b.maxHealth;
+            a.attackRadius += b.attackRadius;
+            a.rangeAttackRadius += b.rangeAttackRadius;
+            a.damageMelleAttack += b.damageMelleAttack;
+            a.currentAmmo += b.currentAmmo;
+            a.maxAmmo += b.maxAmmo;
+
+            return a;
         }
     }
 }
