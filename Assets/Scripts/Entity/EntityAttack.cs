@@ -1,5 +1,6 @@
 using ScrollShooter.Supports;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ScrollShooter.EntityScripts
@@ -33,13 +34,15 @@ namespace ScrollShooter.EntityScripts
             Collider2D[] enemies =
                 Physics2D.OverlapCircleAll(transform.position, attackRadius, enemyLayerMask);
 
+            List<GameObject> enemiesDamaged = new List<GameObject>();
+
             foreach (var enemy in enemies)
             {
-                if (!enemy.isTrigger)
+                if (!enemy.isTrigger && !enemiesDamaged.Contains(enemy.gameObject))
                 {
                     EntityHealthHandler entityHealthHandler = enemy.GetComponent<EntityHealthHandler>();
                     SetDamageOnEntityHealthHandler(entityHealthHandler);
-                    Debug.Log(enemy.name);
+                    enemiesDamaged.Add(enemy.gameObject);
                 }
             }
         }
