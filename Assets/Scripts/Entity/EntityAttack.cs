@@ -13,8 +13,13 @@ namespace ScrollShooter.EntityScripts
 
         public GameObject projecctileObject;
 
-        [SerializeField] protected LayerMask enemyLayerMask;
-        [SerializeField] protected Vector2 spawnProjectileOffset;
+        public AudioClip shootSound;
+        public AudioClip hitSound;
+
+        [SerializeField] protected LayerMask _enemyLayerMask;
+        [SerializeField] protected Vector2 _spawnProjectileOffset;
+
+        protected AudioSource _audioSource;
 
         protected Animator _animator;
         protected Entity _entity;
@@ -32,7 +37,7 @@ namespace ScrollShooter.EntityScripts
             float attackRadius = _entity.EntityCurrentStats.attackRadius;
 
             Collider2D[] enemies =
-                Physics2D.OverlapCircleAll(transform.position, attackRadius, enemyLayerMask);
+                Physics2D.OverlapCircleAll(transform.position, attackRadius, _enemyLayerMask);
 
             List<GameObject> enemiesDamaged = new List<GameObject>();
 
@@ -82,10 +87,24 @@ namespace ScrollShooter.EntityScripts
             OnAttackProcess?.Invoke(false);
         }
 
+        public void PlayShotSound()
+        {
+            _audioSource.clip = shootSound;
+            _audioSource.Play();
+        }
+
+        public void PlayHitSound()
+        {
+            _audioSource.clip = hitSound;
+            _audioSource.Play();
+        }
+
         protected virtual void Init()
         {
             _animator = GetComponent<Animator>();
             _entity = GetComponent<Entity>();
+
+            _audioSource = GetComponentInChildren<AudioSource>();
 
             _entity.OnStartJumpEvent += AttackProcessTurnOff;
             _entity.OnDeath += AttackIsInpossible;
@@ -102,7 +121,6 @@ namespace ScrollShooter.EntityScripts
         {
             if (_attackReady && !_attackIsInpossible)
             {
-
                 _animator.SetTrigger(EntityAnimatorParameters.ATTACK);
             }
         }
@@ -115,8 +133,8 @@ namespace ScrollShooter.EntityScripts
         private void OnSpawnRangeProjectile()
         {
             Vector2 spawnProjectilePosition = new Vector2
-                (transform.position.x + spawnProjectileOffset.x * transform.localScale.x,
-                transform.position.y + spawnProjectileOffset.y);
+                (transform.position.x + _spawnProjectileOffset.x * transform.localScale.x,
+                transform.position.y + _spawnProjectileOffset.y);
 
             Instantiate(projecctileObject, spawnProjectilePosition, Quaternion.identity)
                 .GetComponent<RangeProjectile>().ParametersInit(transform.localScale.x, gameObject);

@@ -31,10 +31,16 @@ namespace ScrollShooter.EntityScripts
                 a.currentHealth = a.maxHealth + b.maxHealth;
             }
             a.maxHealth += b.maxHealth;
+
             a.attackRadius += b.attackRadius;
             a.rangeAttackRadius += b.rangeAttackRadius;
             a.damageMelleAttack += b.damageMelleAttack;
+
             a.currentAmmo += b.currentAmmo;
+            if (a.currentAmmo > a.maxAmmo + b.maxAmmo)
+            {
+                a.currentAmmo = a.maxAmmo + b.maxAmmo;
+            }
             a.maxAmmo += b.maxAmmo;
 
             return a;

@@ -8,6 +8,8 @@ namespace ScrollShooter.SecondaryMechanisms
     public class Buff : MonoBehaviour, IBuff
     {
 
+        public AudioSource audioSource;
+
         [Header("buffs")]
         public float health;
         public float maxHealth;
@@ -20,7 +22,7 @@ namespace ScrollShooter.SecondaryMechanisms
                 currentHealth = health,
                 maxHealth = maxHealth,
                 currentAmmo = ammo,
-                maxAmmo = ammo
+                maxAmmo = maxAmmo
             };
 
             baseStats += newStats;
@@ -34,6 +36,7 @@ namespace ScrollShooter.SecondaryMechanisms
             {
                 buffable.ApplyBaff(this);
                 Destroy(gameObject);
+                audioSource.Play();
             }
         }
     }

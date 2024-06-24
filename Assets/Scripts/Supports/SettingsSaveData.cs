@@ -3,6 +3,8 @@ using System;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using UnityEngine.UI;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace ScrollShooter.Supports
 {
@@ -10,6 +12,8 @@ namespace ScrollShooter.Supports
     {
         public Slider soundSlider;
         public Slider musicSlider;
+
+        public AudioSource musicAudioSource;
 
         private float musicVolume;
         private float soundVolume;
@@ -23,6 +27,9 @@ namespace ScrollShooter.Supports
             set
             {
                 musicVolume = value;
+
+                musicAudioSource.volume = musicVolume;
+
                 try
                 {
                     musicSlider.value = musicVolume;
@@ -43,6 +50,9 @@ namespace ScrollShooter.Supports
             set
             {
                 soundVolume = value;
+
+
+                OnSetSoundVolume(soundVolume);
                 try
                 {
                     soundSlider.value = soundVolume;
@@ -57,11 +67,15 @@ namespace ScrollShooter.Supports
         public void SetSoundVolume(Slider slider)
         {
             SetVolume(ref soundVolume, slider);
+
+            OnSetSoundVolume(soundVolume);
         }
 
         public void SetMusicVolume(Slider slider)
         {
             SetVolume(ref musicVolume, slider);
+
+            musicAudioSource.volume = musicVolume;
         }
 
         private void Start()
@@ -88,13 +102,6 @@ namespace ScrollShooter.Supports
                 Debug.LogError("There is no save data!");
         }
 
-        private void SetVolume(ref float vulume, Slider slider)
-        {
-            vulume = slider.value;
-            //set volume
-            SaveGame();
-        }
-
         private void SaveGame()
         {
             BinaryFormatter bf = new BinaryFormatter();
@@ -106,6 +113,25 @@ namespace ScrollShooter.Supports
             bf.Serialize(file, data);
             file.Close();
             Debug.Log("Game data saved!");
+        }
+
+        private void SetVolume(ref float vulume, Slider slider)
+        {
+            vulume = slider.value;
+            SaveGame();
+        }
+
+        private void OnSetSoundVolume(float value)
+        {
+            List<AudioSource> soundsAudioSources = FindObjectsOfType<AudioSource>().ToList();
+
+            foreach(AudioSource audioSource in soundsAudioSources)
+            {
+                if (audioSource.gameObject.CompareTag("Sound"))
+                {
+                    audioSource.volume = value;
+                }
+            }
         }
     }
 
